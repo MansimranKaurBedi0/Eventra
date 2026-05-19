@@ -30,4 +30,14 @@ class EventController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Event created successfully!');
     }
+
+    public function show(Event $event)
+    {
+        // Ensure the user owns this event
+        if ($event->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        return view('events.show', compact('event'));
+    }
 }

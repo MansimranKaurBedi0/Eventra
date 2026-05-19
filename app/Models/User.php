@@ -34,4 +34,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Event::class);
     }
+
+    public function vendorProfile()
+    {
+        return $this->hasOne(VendorProfile::class);
+    }
 }
