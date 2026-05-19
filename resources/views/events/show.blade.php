@@ -45,15 +45,20 @@
                     </div>
 
                     <!-- Add Guest Form -->
-                    <form action="{{ route('guests.store', $event) }}" method="POST" class="flex gap-2 mb-4">
+                    <form action="{{ route('guests.store', $event) }}" method="POST" class="flex flex-col gap-2 mb-4">
                         @csrf
-                        <input type="text" name="name" placeholder="Guest Name" required class="w-full border-gray-300 rounded-md shadow-sm text-sm">
-                        <select name="rsvp_status" class="border-gray-300 rounded-md shadow-sm text-sm">
-                            <option value="pending">Pending</option>
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
-                        </select>
-                        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm hover:bg-indigo-700">Add</button>
+                        <div class="flex gap-2">
+                            <input type="text" name="name" placeholder="Guest Name" required class="w-1/2 border-gray-300 rounded-md shadow-sm text-sm">
+                            <input type="email" name="email" placeholder="Email Address" required class="w-1/2 border-gray-300 rounded-md shadow-sm text-sm">
+                        </div>
+                        <div class="flex gap-2">
+                            <select name="rsvp_status" class="w-2/3 border-gray-300 rounded-md shadow-sm text-sm">
+                                <option value="pending">Pending</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                            <button type="submit" class="w-1/3 bg-indigo-600 text-white px-4 py-2 rounded-md text-sm hover:bg-indigo-700">Add & Invite</button>
+                        </div>
                     </form>
 
                     <!-- Guest List -->

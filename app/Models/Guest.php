@@ -9,5 +9,8 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 #[Fillable(['event_id', 'name', 'email', 'rsvp_status', 'dietary_preferences'])]
 class Guest extends Model
 {
-    //
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
 }

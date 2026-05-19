@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
     // Guests
     Route::post('/events/{event}/guests', [App\Http\Controllers\GuestController::class, 'store'])->name('guests.store');
     Route::delete('/guests/{guest}', [App\Http\Controllers\GuestController::class, 'destroy'])->name('guests.destroy');
+    Route::patch('/guests/{guest}/rsvp', [App\Http\Controllers\GuestController::class, 'updateRsvp'])->name('guests.rsvp');
 
     // Expenses
     Route::post('/events/{event}/expenses', [App\Http\Controllers\ExpenseController::class, 'store'])->name('expenses.store');

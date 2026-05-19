@@ -117,6 +117,47 @@
                         </ul>
                     </div>
                 @endif
+            @elseif(Auth::user()->role === 'guest')
+                @php
+                    $guestInvitations = \App\Models\Guest::where('email', Auth::user()->email)->with('event')->get();
+                @endphp
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">My Invitations</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        @forelse($guestInvitations as $invitation)
+                            <div class="border rounded-lg p-6 hover:shadow-md transition">
+                                <h4 class="font-bold text-xl mb-2">{{ $invitation->event->name }}</h4>
+                                <div class="text-sm text-gray-600 space-y-1 mb-4">
+                                    <p>📅 {{ \Carbon\Carbon::parse($invitation->event->date)->format('M d, Y') }}</p>
+                                    <p>📍 {{ $invitation->event->location }}</p>
+                                    <p>👤 Hosted by: {{ $invitation->event->user->name }}</p>
+                                </div>
+                                
+                                <form action="{{ route('guests.rsvp', $invitation) }}" method="POST" class="border-t pt-4 space-y-3">
+                                    @csrf @method('PATCH')
+                                    <div>
+                                        <x-input-label for="rsvp_status" :value="__('RSVP Status')" />
+                                        <select name="rsvp_status" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                            <option value="pending" {{ $invitation->rsvp_status === 'pending' ? 'selected' : '' }}>Pending</option>
+                                            <option value="yes" {{ $invitation->rsvp_status === 'yes' ? 'selected' : '' }}>Attending (Yes)</option>
+                                            <option value="no" {{ $invitation->rsvp_status === 'no' ? 'selected' : '' }}>Not Attending (No)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <x-input-label for="dietary_preferences" :value="__('Dietary Preferences (Optional)')" />
+                                        <x-text-input id="dietary_preferences" class="block mt-1 w-full" type="text" name="dietary_preferences" :value="$invitation->dietary_preferences ?? ''" placeholder="e.g. Vegan, Nut Allergy" />
+                                    </div>
+                                    <x-primary-button>Update RSVP</x-primary-button>
+                                </form>
+                            </div>
+                        @empty
+                            <div class="col-span-full text-center py-8 text-gray-500">
+                                You don't have any event invitations yet.
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
             @endif
         </div>
     </div>
