@@ -60,23 +60,29 @@
                                 <p>💰 Starts at ₹{{ number_format($vendor->starting_price) }}</p>
                             </div>
                             
-                            @if(Auth::user()->role === 'planner' && Auth::user()->events->count() > 0)
-                                <form action="{{ route('bookings.store') }}" method="POST" class="mt-4 border-t pt-4">
-                                    @csrf
-                                    <input type="hidden" name="vendor_profile_id" value="{{ $vendor->id }}">
-                                    <input type="hidden" name="agreed_price" value="{{ $vendor->starting_price }}">
-                                    <div class="flex gap-2">
-                                        <select name="event_id" required class="w-full border-gray-300 text-sm rounded">
-                                            <option value="">Select Event...</option>
-                                            @foreach(Auth::user()->events as $event)
-                                                <option value="{{ $event->id }}">{{ $event->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <button type="submit" class="bg-indigo-600 text-white px-3 py-2 rounded text-sm hover:bg-indigo-700 whitespace-nowrap">Book</button>
+                            @if(Auth::user()->role === 'planner')
+                                @if(Auth::user()->events->count() > 0)
+                                    <form action="{{ route('bookings.store') }}" method="POST" class="mt-4 border-t pt-4">
+                                        @csrf
+                                        <input type="hidden" name="vendor_profile_id" value="{{ $vendor->id }}">
+                                        <input type="hidden" name="agreed_price" value="{{ $vendor->starting_price }}">
+                                        <div class="flex items-center gap-2">
+                                            <select name="event_id" required class="flex-1 border-gray-300 text-sm rounded">
+                                                <option value="">Select Event...</option>
+                                                @foreach(Auth::user()->events as $event)
+                                                    <option value="{{ $event->id }}">{{ $event->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <button type="submit" class="flex-shrink-0 bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700 shadow-sm font-bold">Book</button>
+                                        </div>
+                                    </form>
+                                @else
+                                    <div class="mt-4 border-t pt-4 text-sm text-red-500 font-semibold text-center">
+                                        Create an event first to book vendors!
                                     </div>
-                                </form>
+                                @endif
                             @else
-                                <button class="w-full bg-gray-50 border border-gray-300 text-gray-700 py-2 rounded text-sm hover:bg-gray-100 font-semibold transition">View Profile</button>
+                                <button class="mt-4 w-full bg-gray-50 border border-gray-300 text-gray-700 py-2 rounded text-sm hover:bg-gray-100 font-semibold transition">View Profile</button>
                             @endif
                         </div>
                     </div>
